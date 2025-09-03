@@ -18,23 +18,8 @@ export const connectToRabbitMQ = async () => {
   }
 };
 
-export const publishEvent = async (routingKey, message) => {
-  if (!channel) {
-    logger.error("Channel is not initialized");
-    await connectToRabbitMQ();
-  }
-
-  try {
-    const msgBuffer = Buffer.from(JSON.stringify(message));
-    channel.publish(Exchange_NAME, routingKey, msgBuffer);
-    logger.info(`Event published with routing key: ${routingKey}`);
-  } catch (error) {
-    logger.error("Error publishing event:", error);
-    throw error;
-  }
-};
-
 export const consumeEvent = async (routingKey, callback) => {
+  console.log("Consuming event with routing key:", routingKey);
   if (!channel) {
     logger.error("Channel is not initialized");
     await connectToRabbitMQ();
